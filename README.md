@@ -57,3 +57,6 @@ Reference: https://projectreactor.io/docs/core/release/reference/index.html
 Spring Data R2CDB
 Reactive Relational Database Connectivity
 Driver: r2dbc-mariadb or r2dbc-mysql, ...
+
+## Error handling
+![error-handling.png](assets%2Ferror-handling.png)
