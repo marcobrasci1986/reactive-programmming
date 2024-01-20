@@ -1,26 +1,32 @@
 package be.avidoo.webflux.demo.controller;
 
 import be.avidoo.webflux.demo.model.Stock;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import be.avidoo.webflux.demo.service.StockService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/stocks")
+@RequiredArgsConstructor
 public class StockController {
+
+    private final StockService stockService;
 
     @GetMapping("/{id}")
     public Mono<Stock> getOneStock(@PathVariable String id) {
-        return Mono.just(Stock.builder().name("stock-%s".formatted(id)).build());
+        return stockService.getOneStock(id);
     }
 
     @GetMapping
     public Flux<Stock> getAllStocks() {
-        return Flux.range(1, 5)
-                .map(i -> Stock.builder().name("stock-%s".formatted(i)).build());
+        return stockService.getAllStocks();
+    }
+
+    @PostMapping
+    public Mono<Stock> getAllStocks(@RequestBody Stock stock) {
+        return stockService.createStock(stock);
     }
 
 }
