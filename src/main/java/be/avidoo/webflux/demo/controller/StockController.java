@@ -1,6 +1,7 @@
 package be.avidoo.webflux.demo.controller;
 
-import be.avidoo.webflux.demo.model.Stock;
+import be.avidoo.webflux.demo.dto.StockRequest;
+import be.avidoo.webflux.demo.dto.StockResponse;
 import be.avidoo.webflux.demo.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +16,18 @@ public class StockController {
     private final StockService stockService;
 
     @GetMapping("/{id}")
-    public Mono<Stock> getOneStock(@PathVariable String id) {
+    public Mono<StockResponse> getOneStock(@PathVariable String id) {
         return stockService.getOneStock(id);
     }
 
     @GetMapping
-    public Flux<Stock> getAllStocks() {
+    public Flux<StockResponse> getAllStocks() {
         return stockService.getAllStocks();
     }
 
     @PostMapping
-    public Mono<Stock> getAllStocks(@RequestBody Stock stock) {
-        return stockService.createStock(stock);
+    public Mono<StockResponse> getAllStocks(@RequestBody StockRequest stockRequest) {
+        return stockService.createStock(stockRequest);
     }
 
 }

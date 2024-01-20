@@ -1,6 +1,7 @@
 package be.avidoo.webflux.demo.service;
 
-import be.avidoo.webflux.demo.model.Stock;
+import be.avidoo.webflux.demo.dto.StockRequest;
+import be.avidoo.webflux.demo.dto.StockResponse;
 import be.avidoo.webflux.demo.repository.StocksRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,16 @@ public class StockService {
 
     private final StocksRepository stocksRepository;
 
-    public Mono<Stock> getOneStock(String id) {
-        return stocksRepository.findById(id);
+    public Mono<StockResponse> getOneStock(String id) {
+        return stocksRepository.findById(id)
+                .map(StockResponse::fromModel);
     }
 
-    public Flux<Stock> getAllStocks() {
-        return stocksRepository.findAll();
+    public Flux<StockResponse> getAllStocks() {
+        return stocksRepository.findAll().map(StockResponse::fromModel);
     }
 
-    public Mono<Stock> createStock(Stock stock) {
-        return stocksRepository.save(stock);
+    public Mono<StockResponse> createStock(StockRequest stockRequest) {
+        return stocksRepository.save(stockRequest.toModel()).map(StockResponse::fromModel);
     }
 }
