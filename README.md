@@ -60,3 +60,6 @@ Driver: r2dbc-mariadb or r2dbc-mysql, ...
 
 ## Error handling
 ![error-handling.png](assets%2Ferror-handling.png)
+
+## Peek operators
+![peek-operators.png](assets%2Fpeek-operators.png)
