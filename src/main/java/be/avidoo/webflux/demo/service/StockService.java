@@ -25,13 +25,23 @@ public class StockService {
                 .map(StockResponse::fromModel)
                 .switchIfEmpty(Mono.error(
                         new StockNotFoundException("Stock not found with id %s".formatted(id))
-                ));
+                ))
+                .doFirst(() -> log.info("Retrieving stock with id: %s".formatted(id)))
+                .doOnNext(stock -> log.info("Stock found %s".formatted(stock)))
+                .doOnError(ex -> log.error("Something went wrong while retrieving the stock with id %s".formatted(id)))
+                .doOnTerminate(() -> log.info("Finalized retrieving stock"))
+                .doFinally(signalType -> log.info("Finalized retrieving stock with signal type %s".formatted(signalType)));
     }
 
     public Flux<StockResponse> getAllStocks(BigDecimal priceGreaterThan) {
         return stocksRepository.findAll()
                 .filter(stock -> stock.getPrice().compareTo(priceGreaterThan) > 0)
-                .map(StockResponse::fromModel);
+                .map(StockResponse::fromModel)
+                .doFirst(() -> log.info("Retrieving all stocks" ))
+                .doOnNext(stock -> log.info("Stock found %s".formatted(stock)))
+                .doOnError(ex -> log.error("Something went wrong while retrieving all stocks"))
+                .doOnTerminate(() -> log.info("Finalized retrieving stock"))
+                .doFinally(signalType -> log.info("Finalized retrieving stock with signal type %s".formatted(signalType)));
     }
 
     /**
