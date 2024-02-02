@@ -74,7 +74,6 @@ class StockIt {
     @Test
     void shouldReturnNotFoundForUnknownId() {
         when(stocksRepository.findById(STOCK_ID)).thenReturn(Mono.empty());
-
         // when
         ProblemDetail problemDetail = client.get()
                 .uri(uriBuilder -> uriBuilder.path("/stocks/{id}").build(STOCK_ID))
